@@ -1,0 +1,80 @@
+:root {
+    --bg: #f3f3f3;
+    --card: #ffffff;
+    --line: #e5e5e5;
+    --text: #1b1b1b;
+    --muted: #5d5d5d;
+    --hover: #f3f3f3;
+    --accent: #0067c0;
+    --accent-hover: #1975c5;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+  }
+  header {
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  header .title { font-weight: 600; font-size: 15px; margin-right: 6px; white-space: nowrap; }
+  .btn {
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--hover); }
+  .btn.primary { background: var(--accent); color: #fff; }
+  .btn.primary:hover { background: var(--accent-hover); }
+  .btn.danger:hover { background: #fde7e9; }
+  .sep { width: 1px; height: 22px; background: var(--line); margin: 0 4px; }
+  .settings {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    margin-left: auto;
+  }
+  .settings label { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; }
+  .settings input, .settings select {
+    border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px;
+    font-family: inherit; font-size: 13px; background: #fff; color: var(--text);
+  }
+  main { padding: 16px 18px; }
+  .hint { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+  .table-wrap {
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: auto;
+  }
+  table { border-collapse: collapse; width: 100%; min-width: 1080px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 4px 6px; text-align: left; }
+  th {
+    background: #fafafa; color: #505050; font-weight: 500; font-size: 12px;
+    position: sticky; top: 0; z-index: 1;
+  }
+  tbody tr:hover { background: #fafafa; }
+  td input, td select {
+    width: 100%; border: 1px solid transparent; background: transparent;
+    font-family: inherit; font-size: 13px; color: var(--text); padding: 5px 6px; border-radius: 4px;
+  }
+  td input:hover, td select:hover { background: #f9f9f9; }
+  td input:focus, td select:focus { outline: none; border-color: var(--accent); background: #fff; }
+  td input.del-check { width: 16px; height: 16px; cursor: pointer; }
+  .ctr { width: 34px; text-align: center; }
+  dialog.modal { border: none; border-radius: 10px; padding: 0; width: 720px; max-width: 94vw; height: 82vh; box-shadow: 0 20px 50px rgba(0,0,0,.3); }
+  .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--line); }
+  .modal-head span { font-weight: 600; font-size: 16px; }
+  .modal-body { padding: 16px 22px; overflow: auto; height: calc(100% - 60px); color: #222; line-height: 1.7; }
+  .modal-body h3 { font-size: 15px; margin: 16px 0 6px; }
+  .modal-body p { margin: 4px 0; }
+  .modal-body .faq-q { font-weight: 600; margin-top: 12px; }

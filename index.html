@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>课表转日历 — docx → Outlook .ics</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <span class="title">课表转日历</span>
+  <input type="file" id="fileInput" accept=".docx" style="display:none">
+  <input type="file" id="icsInput" accept=".ics" style="display:none">
+  <button class="btn" id="btnOpen">打开 .docx</button>
+  <button class="btn" id="btnParse">解析课表</button>
+  <span class="sep"></span>
+  <button class="btn" id="btnAdd">添加行</button>
+  <button class="btn danger" id="btnDel">删除选中行</button>
+  <span class="sep"></span>
+  <button class="btn" id="btnImportIcs">导入 .ics（作业）</button>
+  <button class="btn tutorial" id="btnTutorial">教程</button>
+  <button class="btn primary" id="btnExport">导出 .ics</button>
+
+  <div class="settings">
+    <label>第1周周一 <input type="date" id="firstMon" value="2026-08-31"></label>
+    <label>时区
+      <select id="tz">
+        <option value="Asia/Shanghai">Asia/Shanghai (UTC+8)</option>
+        <option value="floating">不指定时区（浮动）</option>
+      </select>
+    </label>
+    <label>提前提醒(分) <input type="number" id="remind" value="20" min="0" max="240" style="width:70px"></label>
+    <label>日历名 <input type="text" id="calName" value="课表" style="width:120px"></label>
+  </div>
+</header>
+
+<main>
+  <div class="hint" id="hint">点「打开 .docx」选择课表文档，再点「解析课表」。解析后可在表格中直接修改，再导出 .ics。</div>
+  <div class="table-wrap">
+    <table id="grid">
+      <thead>
+        <tr>
+          <th class="ctr"><input type="checkbox" id="checkAll" title="全选"></th>
+          <th>课程名</th><th>星期</th><th>开始</th><th>结束</th>
+          <th>起始周</th><th>结束周</th><th>地点</th><th>教师</th><th>教学班代码</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</main>
+
+<dialog class="modal" id="modal">
+  <div class="modal-head"><span>使用教程</span><button class="btn" id="modalClose">我知道了</button></div>
+  <div class="modal-body">
+    <h3>课表转日历 · 使用教程</h3>
+    <p>把教务系统导出的 Word 课表（.docx）转换成 Outlook 日历（.ics）。流程：导出课表(.docx) → 打开 → 解析 → 校对 → 设置 → 导出 .ics → 导入 Outlook。</p>
+    <h3>0. 先从 i西湖 导出课表（得到 .docx）</h3>
+    <p>打开 i西湖：工作台 → 教务系统 → 我的课表 → 打印 → 导出 → 导出至一个 Word 文件。</p>
+    <p>把导出的 .docx 保存并传到电脑上（微信文件传输助手 / 网盘 / 数据线均可）。</p>
+    <h3>1. 打开课表</h3>
+    <p>点击「打开 .docx」选择刚从 i西湖 导出的 Word 课表文件。</p>
+    <h3>2. 解析课表</h3>
+    <p>点击「解析课表」。程序会自动定位「星期一…星期日」各列，解析出课程名、星期、上下课时间、起止周次、上课地点、任课教师和教学班代码。</p>
+    <h3>3. 校对与修改</h3>
+    <p>在表格中逐行检查并直接修改；「添加行」「删除选中行」用于增删条目。同一门课每周上多次、或分不同周次，应各占一行；地点有多个教室时用「 / 」分隔。</p>
+    <h3>4. 设置导出参数</h3>
+    <p>「第1周周一」填学期第一周星期一的日期；「时区」默认 Asia/Shanghai (UTC+8)；「提前提醒」为课程开始前多少分钟提醒（0 不提醒）；「日历名」为导入 Outlook 后的日历名称。</p>
+    <h3>5. 导出 .ics</h3>
+    <p>点击「导出 .ics」即可下载日历文件，可直接导入 Outlook。</p>
+    <h3>6. 导入 Outlook（建议导入为独立日历）</h3>
+    <p>网页版：日历 → 添加日历 → 从文件上传。想要独立日历，可先「添加日历 → 创建空白日历」命名，再上传 .ics 并选择导入到该新建日历。</p>
+    <p>手机版：日历 → 左上角头像/菜单 → 设置(齿轮) → 添加日历 → 从文件上传，导入时选择「新建日历」。</p>
+    <p>桌面版：文件 → 打开和导出 → 导入/导出 → 导入 iCalendar (.ics) 文件，并选择「作为新日历导入」。</p>
+    <h3>7. 从 Canvas 导入作业（可选）</h3>
+    <p>打开 i西湖：工作台 → Canvas 学习系统 → 日历 → 日历源(Calendar Feed) → 复制 ICS 地址。</p>
+    <p>在电脑浏览器打开该地址会下载一个 .ics 文件；回到本工具点「导入 .ics（作业）」，选择该文件即可。</p>
+    <p>作业会按截止时间追加到表格里，和课表一起导出成同一个日历。注意：请先设好「第1周周一」，早于该日期的作业会被跳过；导入后请核对截止时间。</p>
+    <h3>常见问题</h3>
+    <p class="faq-q">· 解析结果不对或漏课程？</p>
+    <p>个别课表排版特殊，直接在表格中修改相应行即可，无需重新解析。</p>
+    <p class="faq-q">· 某门课一周上两次或分周次？</p>
+    <p>拆成两行分别填写，程序会生成独立的周重复事件。</p>
+    <p class="faq-q">· 导入后时间错乱？</p>
+    <p>确认「时区」选了 Asia/Shanghai，且「第1周周一」日期正确。</p>
+    <p class="faq-q">· 如何删除已导入的旧日历？</p>
+    <p>网页版：左侧“我的日历”中悬停该日历 → 「⋯」→ 移除；若并入了默认日历，则逐条删除旧事件。手机版：日历 → 菜单 → 点日历旁 ⓘ → 删除日历。桌面版：右键该日历 → 删除。</p>
+  </div>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>
